@@ -20,4 +20,12 @@ SELECT W1.ID
     FROM WEATHER W1 JOIN WEATHER W2
                     ON W1.recordDate = DATEADD(DAY,1,W2.RECORDDATE)
                     WHERE W1.temperature > W2.temperature
-                    
+
+
+/*Using window function*/
+
+WITH CTE AS(
+SELECT ID, RECORDDATE,temperature,
+        LAG(temperature) OVER (ORDER BY RECORDDATE) AS PREVIOUSDAYTEMP
+        FROM WEATHER)
+        SELECT ID FROM CTE WHERE temperature> PREVIOUSDAYTEMP 
